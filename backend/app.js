@@ -4,8 +4,9 @@ import cors from "cors"
 import connectMongoDb from "./config/mongo.config.js"
 import { HTTPSTATUS } from "./config/http.config.js"
 import { config } from "./config/app.config.js"
-import authenticateUser from "./middleware/auth.middleware.js"
-import authRouter from "./routes/auth.routes.js"
+import isAuthenticated from "./middleware/auth.middleware.js"  // isAuthenticated will work as an alias for authenticateUser imoprted from auth.middleware 
+import authRoutes from "./routes/auth.routes.js"
+import userRoutes from "./routes/user.routes.js"
 const app = express()
 const BASE_PATH = config.BASE_PATH
 app.use(cors())
@@ -16,7 +17,8 @@ app.get("/", (req, res) => {
         message: "StudySphere First Api"
     })
 })
-app.use(`${BASE_PATH}/auth`, authRouter)
+app.use(`${BASE_PATH}/auth`, authRoutes)
+app.use(`${BASE_PATH}/user`, isAuthenticated, userRoutes)
 connectMongoDb()
 app.listen(config.PORT, () => console.log(`Server is Intercepting Requests on port = http://localhost:${config.PORT}`))
 // app.get('/auth', authenticateUser, (req, res) => {

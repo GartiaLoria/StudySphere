@@ -32,7 +32,7 @@ export const loginUser = async (req, res) => {
         })
     }
     let resJson = await verifyUserService(req.body)
-    console.log(resJson)
+    // console.log(resJson)
     return res.status(resJson.status).json({
         message: resJson.message,
         SignedToken: resJson.status === HTTPSTATUS.ACCEPTED ? resJson.signedToken : null

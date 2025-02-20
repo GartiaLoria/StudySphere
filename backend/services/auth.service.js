@@ -75,13 +75,14 @@ export const verifyUserService = async body => {
         let token = jwt.sign({ 
             user: { 
                 name: user.name, 
-                email: user.email 
+                email: user.email,
+                userId: user._id 
             }}, 
             config.JWT_SECRET, { 
                 expiresIn: '30 minutes' 
             }
         )
-        console.log("Token = " + token)
+        // console.log("Token = " + token)
         return ({
             "status": HTTPSTATUS.ACCEPTED,
             "message": "Login Successful",

@@ -9,8 +9,8 @@ const authenticateUser = (req, res, next) => {
         })
     }
     try {
-        let decodedData = jwt.verify(token.split(' ')[1], config.JWT_SECRET)
-        console.log('Decoded data: ', decodedData)
+        let decodedData = jwt.verify(token, config.JWT_SECRET)
+        // console.log('Decoded data: ', decodedData)
         req.user = decodedData.user
         console.log("Authentication Success")
     } catch (error) {
