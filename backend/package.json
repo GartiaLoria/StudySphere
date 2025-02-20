@@ -1,0 +1,12 @@
+{
+  "name": "studysphere-backend",
+  "version": "108.0.0",
+  "description": "StudySphere Final Year Project Backend",
+  "license": "ISC",
+  "author": "Ashish Singh, Rahul Kumar",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
