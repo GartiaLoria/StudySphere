@@ -1,10 +1,15 @@
-import { createWorkspaceSchema } from "../validation/workspace.validation.js"
+import { changeRoleSchema, createWorkspaceSchema } from "../validation/workspace.validation.js"
 import { workspaceIdSchema } from "../validation/workspace.validation.js"
 import { createWorkspaceService } from "../services/workspace.service.js"
 import { getAllWorkspacesUserIsMemberService } from "../services/workspace.service.js"
 import { getWorkspaceByIdService } from "../services/workspace.service.js"
-import { getMemberRoleInWorkspace } from "../services/member.service.js"
+import { getMemberRoleInWorkspaceService } from "../services/member.service.js"
+import { getWorkspaceMembersService } from "../services/workspace.service.js"
+import { getWorkspaceAnalyticsService } from "../services/workspace.service.js"
+import { changeMemberRoleService } from "../services/workspace.service.js"
 import { HTTPSTATUS } from "../config/http.config.js"
+import { roleGuard } from "../utils/roleGuard.util.js"
+import { Permissions } from "../enums/roles.enum.js"
 export const createWorkspaceController = async (req, res) => {
     const body = createWorkspaceSchema.parse(req.body)
     const userId = req.user?._id
@@ -25,10 +30,56 @@ export const getAllWorkspacesUserIsMemberController = async (req, res) => {
 export const getWorkspaceByIdController = async (req, res) => {
     const workspaceId = workspaceIdSchema.parse(req.params.id);
     const userId = req.user?._id;
-    await getMemberRoleInWorkspace(userId, workspaceId)
+    await getMemberRoleInWorkspaceService(userId, workspaceId)
     const { workspace } = await getWorkspaceByIdService(workspaceId)
     return res.status(HTTPSTATUS.OK).json({
       message: "Workspace fetched successfully",
       workspace
+    })
+}
+export const getWorkspaceMembersController = async (req, res) => {
+    const workspaceId = workspaceIdSchema.parse(req.params.id)
+    const userId = req.user?._id
+    // console.log(userId, workspaceId) 
+    const role = await getMemberRoleInWorkspaceService(userId, workspaceId)
+    // console.log(role)
+    roleGuard(role, [Permissions.VIEW_ONLY])
+    const { members, roles } = await getWorkspaceMembersService(workspaceId)
+    return res.status(HTTPSTATUS.OK).json({
+        message: "Workspace members retrieved successfully",
+        members,
+        roles
+    })
+}
+export const getWorkspaceAnalyticsController = async (req, res) => {
+    console.log("Inside workspace analytics Controller")
+    const workspaceId = workspaceIdSchema.parse(req.params.id)
+    const userId = req.user?._id 
+    // console.log(userId, workspaceId)
+    const role = await getMemberRoleInWorkspaceService(userId, workspaceId)
+    roleGuard(role, [Permissions.VIEW_ONLY])
+    const analytics =  await getWorkspaceAnalyticsService(workspaceId)
+    return res.status(HTTPSTATUS.OK).json({
+        "message": "WorkSpace's Tasks Status Fetched Successfully",
+        analytics
+    })
+} 
+export const changeWorkspaceMemberRoleController = async (req, res) => {
+    const workspaceId = workspaceIdSchema.parse(req.params.id)
+    const userId = req.user?._id
+    const { memberId, roleId } = changeRoleSchema.parse(req.body)
+    const role = await getMemberRoleInWorkspaceService(userId, workspaceId)
+    try{
+        roleGuard(role, [Permissions.CHANGE_MEMBER_ROLE])
+    } catch (error) {
+        return res.status(HTTPSTATUS.UNAUTHORIZED).json({
+            message: "You are not allowed to change roles",
+            error
+        })
+    }
+    const { member } = await changeMemberRoleService(workspaceId, memberId, roleId)
+    return res.status(HTTPSTATUS.OK).json({
+        "message": "Member role changed successfully",
+        member
     })
 }
