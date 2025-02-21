@@ -76,10 +76,10 @@ export const verifyUserService = async body => {
             user: { 
                 name: user.name, 
                 email: user.email,
-                userId: user._id 
+                _id: user._id 
             }}, 
             config.JWT_SECRET, { 
-                expiresIn: '30 minutes' 
+                expiresIn: '1000 minutes' 
             }
         )
         // console.log("Token = " + token)

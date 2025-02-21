@@ -6,7 +6,7 @@ const roleSchema = new mongoose.Schema({
         type: String,
         enum: Object.values(Roles),
         required: true,
-        unique: true,
+        unique: true
     },
     permissions: {
         type: [String],
@@ -14,8 +14,8 @@ const roleSchema = new mongoose.Schema({
         required: true,
         default: function () {
             return RolePermissions[this.name] || [];
-        },
-    },
+        }
+    }
 }, { 
     timestamps: true 
 })
