@@ -8,6 +8,7 @@ import isAuthenticated from "./middleware/auth.middleware.js"  // isAuthenticate
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import workspaceRoutes from "./routes/workspace.routes.js"
+import memberRoutes from "./routes/member.routes.js"
 const app = express()
 const BASE_PATH = config.BASE_PATH
 app.use(cors())
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 app.use(`${BASE_PATH}/auth`, authRoutes)
 app.use(`${BASE_PATH}/user`, isAuthenticated, userRoutes)
 app.use(`${BASE_PATH}/workspace`, isAuthenticated, workspaceRoutes)
+app.use(`${BASE_PATH}/member`, isAuthenticated, memberRoutes)
 connectMongoDb()
 app.listen(config.PORT, () => console.log(`Server is Intercepting Requests on port = http://localhost:${config.PORT}`))
 // app.get('/auth', authenticateUser, (req, res) => {

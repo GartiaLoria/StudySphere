@@ -1,4 +1,3 @@
-// import { Permissions } from "../enums/roles.enum.js"
 import { UnauthorizedException } from "./appError.util.js"
 import { RolePermissions } from "./rolesPermissions.util.js"
 export const roleGuard = (role, requiredPermissions) => {
@@ -10,4 +9,4 @@ export const roleGuard = (role, requiredPermissions) => {
     if (!hasPermission) {
         throw new UnauthorizedException("You do not have the necessary permissions to perform this action")
     }
-};
+}

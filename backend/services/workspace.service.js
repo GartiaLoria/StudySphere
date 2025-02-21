@@ -3,6 +3,7 @@ import RoleModel from "../models/roles.model.js"
 import WorkspaceModel from "../models/workspace.model.js"
 import MemberModel from "../models/member.model.js"
 import TaskModel from "../models/task.model.js"
+import ProjectModel from "../models/project.model.js/"
 import { Roles } from "../enums/roles.enum.js"
 import { NotFoundException } from "../utils/appError.util.js"
 import { TaskStatusEnum } from "../enums/tasks.enum.js"
@@ -103,4 +104,41 @@ export const changeMemberRoleService = async (workspaceId, memberId, roleId) => 
     member.role = role 
     await member.save()
     return { member }
+}
+export const updateWorkspaceByIdService = async (workspaceId, name, description) => {
+    const workspace = await WorkspaceModel.findById(workspaceId);
+    if (!workspace) {
+        throw new NotFoundException("Workspace not found");
+    }
+    // Update the workspace details
+    workspace.name = name || workspace.name
+    workspace.description = description || workspace.description
+    await workspace.save()
+    return { workspace }
+}
+export const deleteWorkspaceService = async (userId, workspaceId) => {
+    const workspace = await WorkspaceModel.findById(workspaceId)
+    if (!workspace) {
+        throw new NotFoundException("Workspace not found");
+    }
+    // Check if the user owns the workspace
+    if (workspace.owner.toString() !== userId) {
+        throw new BadRequestException("You are not authorized to delete this workspace")
+    }
+    const user = await UserModel.findById(userId)
+    if (!user) {
+        throw new NotFoundException("User not found");
+    }
+    await ProjectModel.deleteMany({ workspace: workspace._id })
+    await TaskModel.deleteMany({ workspace: workspace._id })
+    await MemberModel.deleteMany({ workspaceId: workspace._id })
+    // Update the user's currentWorkspace if it matches the deleted workspace
+    if (user?.currentWorkspace?.equals(workspaceId)) {
+        const memberWorkspace = await MemberModel.findOne({ userId })
+        // Update the user's currentWorkspace
+        user.currentWorkspace = memberWorkspace ? memberWorkspace.workspaceId : null
+        await user.save()
+    }
+    await workspace.deleteOne()
+    return { currentWorkspace: user.currentWorkspace }
 }
