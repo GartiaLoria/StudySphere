@@ -11,3 +11,4 @@
 ##### [ npm run seed ] in backend folder to seed the roles initially into database
 
 ## Schema
+![Studysphere_Schema](https://github.com/user-attachments/assets/5730a91f-9fd2-4a0e-8f68-8714dedb73a7)
