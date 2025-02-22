@@ -10,6 +10,4 @@
 #### ✅✅✅
 ##### [ npm run seed ] in backend folder to seed the roles initially into database
 
-# Schema
-
-![_C__Users_ashis_Desktop_StudySphere_Schema html](https://github.com/user-attachments/assets/fc7a1238-28e0-4ff3-890a-f80957c5e090)
+## Schema
