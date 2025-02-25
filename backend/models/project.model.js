@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
 // Deleting previously created model if facing any error due to change in model later
-// if (mongoose.models.Project) {
-//     delete mongoose.connection.models["Project"]
-// }
+if (mongoose.models.Project) {
+    delete mongoose.connection.models["Project"]
+}
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
