@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
 // Deleting previously created model if facing any error due to change in model later
-if (mongoose.models.Project) {
-    delete mongoose.connection.models["Project"]
-}
+// if (mongoose.models.Project) {
+//     delete mongoose.connection.models["Project"]
+// }
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -11,7 +11,6 @@ const projectSchema = new mongoose.Schema({
     },
     emoji: {
         type: String,
-        required: false,
         trim: true,
         default: "👍"
     },
@@ -32,5 +31,5 @@ const projectSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-const ProjectModel = mongoose.model("Project", projectSchema)
+const ProjectModel = mongoose.models.Project || mongoose.model("Project", projectSchema)
 export default ProjectModel

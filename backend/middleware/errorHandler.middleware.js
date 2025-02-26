@@ -4,7 +4,7 @@ import { ErrorCodesEnum } from "../enums/errorCodes.enum.js"
 import { ZodError } from "zod"
 
 const errorHandler = (error, req, res, next) => {
-    console.error("Error Handler Middleware:", error);
+    console.error("Error Handler Middleware:", error)
     // Handle invalid JSON format errors
     if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
         return res.status(HTTPSTATUS.BAD_REQUEST).json({
