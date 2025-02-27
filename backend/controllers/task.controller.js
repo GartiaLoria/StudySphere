@@ -49,7 +49,27 @@ export const updateTaskController = async (req, res, next) => {
 }
 export const getAllTasksController = async (req, res, next) => {
     try {
-        await getAllTasksService()
+        const userId = req.user?._id
+        const workspaceId = workspaceIdSchema.parse(req.params.workspaceId)
+        const filters = {
+            projectId: req.query.projectId || undefined,
+            status: req.query.status ? req.query.status.split(",") : undefined,
+            priority: req.query.priority ? req.query.priority.split(",") : undefined,
+            assignedTo: req.query.assignedTo ? req.query.assignedTo.split(",") : undefined,
+            keyword: req.query.keyword || undefined,
+            dueDate: req.query.dueDate || undefined
+        }
+        const pagination = {
+            pageSize: parseInt(req.query.pageSize) || 10,
+            pageNumber: parseInt(req.query.pageNumber) || 1
+        }
+        const role = await getMemberRoleInWorkspaceService(userId, workspaceId)
+        roleGuard(role, [Permissions.VIEW_ONLY])
+        const result = await getAllTasksService(workspaceId, filters, pagination)
+        return res.status(HTTPSTATUS.OK).json({
+            message: "All tasks fetched successfully",
+            ...result
+        })
     } catch (error) {
         next(error)
     }
