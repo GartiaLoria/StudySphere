@@ -12,6 +12,7 @@ export const getMemberRoleInWorkspaceService = async (userId, workspaceId) => {
     }
     const member = await MemberModel.findOne({ userId, workspaceId })
         .populate("role")
+    // console.log(member)
     if(!member) {
         throw new UnauthorizedException("You do not have access to this workspace", ErrorCodesEnum.ACCESS_UNAUTHORIZED)
     }

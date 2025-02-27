@@ -56,43 +56,29 @@ export const registerUserService = async body => {
 
 export const verifyUserService = async body => {
     const { email, password } = body
-    try {
-        let user = await UserModel.findOne({ email })
-        if(!user) {
-            return ({
-                "status": HTTPSTATUS.NOT_FOUND, 
-                "message": "No Account Exists with this Email Address"
-            })
-        }
-        // console.log('Loggedin user: ', user)
-        let isValidPassword = await user.comparePassword(password, user.password)
-        if(!isValidPassword) {
-            return ({
-                "status": HTTPSTATUS.BAD_REQUEST,
-                "message": "Invalid Password"
-            })
-        }
-        let token = jwt.sign({ 
-            user: { 
-                name: user.name, 
-                email: user.email,
-                _id: user._id 
-            }}, 
-            config.JWT_SECRET, { 
-                expiresIn: '1000 minutes' 
-            }
-        )
-        // console.log("Token = " + token)
-        return ({
-            "status": HTTPSTATUS.ACCEPTED,
-            "message": "Login Successful",
-            "signedToken": token
-        })
-    } catch (error) {
-        // console.log(error)
-        return ({
-            "status": HTTPSTATUS.INTERNAL_SERVER_ERROR,
-            "message": error.message
-        })
+    let user = await UserModel.findOne({ email })
+    if(!user) {
+        throw new NotFoundException("No account exists with this Email address")
     }
+    // console.log('Loggedin user: ', user)
+    let isValidPassword = await user.comparePassword(password, user.password)
+    if(!isValidPassword) {
+        throw new BadRequestException("Invalid Password")
+    }
+    let token = jwt.sign({ 
+        user: { 
+            name: user.name, 
+            email: user.email,
+            _id: user._id 
+        }}, 
+        config.JWT_SECRET, { 
+            expiresIn: '1000 minutes' 
+        }
+    )
+    // console.log("Token = " + token)
+    return ({
+        "status": HTTPSTATUS.ACCEPTED,
+        "message": "Login Successful",
+        "signedToken": token
+    })
 }
