@@ -1,10 +1,12 @@
 import express from "express"
-import { createProjectController } from "../controllers/project.controller.js"
-import { getAllProjectsInWorkspaceController } from "../controllers/project.controller.js"
-import { getProjectByIdAndWorkspaceIdController } from "../controllers/project.controller.js"
-import { getProjectAnalyticsController } from "../controllers/project.controller.js"
-import { updateProjectController } from "../controllers/project.controller.js"
-import { deleteProjectController } from "../controllers/project.controller.js"
+import { 
+    createProjectController,
+    getAllProjectsInWorkspaceController,
+    getProjectByIdAndWorkspaceIdController,
+    getProjectAnalyticsController,
+    updateProjectController,
+    deleteProjectController 
+} from "../controllers/project.controller.js"
 
 const projectRoutes = express.Router()
 projectRoutes.post("/workspace/:workspaceId/create", createProjectController)

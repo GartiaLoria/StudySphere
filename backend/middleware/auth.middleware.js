@@ -1,23 +1,19 @@
 import jwt from "jsonwebtoken"
-import { HTTPSTATUS } from "../config/http.config.js"
 import { config } from "../config/app.config.js"
+import { 
+    BadRequestException, 
+    UnauthorizedException 
+} from "../utils/appError.util.js"
 const authenticateUser = (req, res, next) => {
     const token = req.header('Authorization')
-    // console.log("Header = ", token)
     if(!token){
-        return res.status(HTTPSTATUS.UNAUTHORIZED).json({
-            "message": "Token Unavailable, Can't be Authorized"
-        })
+        throw new UnauthorizedException("Bearer Token Unavailable, Authorization Failed ❌") 
     }
     try {
         let decodedData = jwt.verify(token.split(" ")[1], config.JWT_SECRET)
-        // console.log('Decoded data: ', decodedData)
         req.user = decodedData.user
-        // console.log("Authentication Success")
     } catch (error) {
-        return res.status(HTTPSTATUS.BAD_REQUEST).json({
-            "message": "Login Invalidated, Try Logging in Again"
-        })
+        throw new BadRequestException("Login Invalidated, Token not verified")
     }
     next()
 }

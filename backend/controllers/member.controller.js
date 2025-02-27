@@ -4,7 +4,7 @@ export const joinWorkspaceController = async (req, res, next) => {
     try {
         const userId = req.user?._id 
         const inviteCode = req.params.inviteCode
-        const { workspaceId, role } = await joinWorkspaceByInviteCodeService(userId, inviteCode)
+        let { workspaceId, role } = await joinWorkspaceByInviteCodeService(userId, inviteCode)
         return res.status(HTTPSTATUS.OK).json({
             "message": "successfully joined the workspace",
             workspaceId,

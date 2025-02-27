@@ -1,5 +1,9 @@
-import { Roles, Permissions } from "../enums/roles.enum.js"
+import { 
+    Roles, 
+    Permissions 
+} from "../enums/roles.enum.js"
 export const RolePermissions = Object.freeze({
+    // Owner having access of all kinds of permissions
     [Roles.OWNER]: Object.values(Permissions),
     [Roles.ADMIN]: [
         Permissions.ADD_MEMBER,

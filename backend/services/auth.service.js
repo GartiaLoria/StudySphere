@@ -1,56 +1,49 @@
 import jwt from "jsonwebtoken"
-import UserModel from "../models/user.model.js"
-import WorkspaceModel from "../models/workspace.model.js"
-import RoleModel from "../models/roles.model.js"
-import MemberModel from "../models/member.model.js"
-import { Roles } from "../enums/roles.enum.js"
-import { BadRequestException, NotFoundException } from "../utils/appError.util.js"
 import { config } from "../config/app.config.js"
 import { HTTPSTATUS } from "../config/http.config.js"
+import { Roles } from "../enums/roles.enum.js"
+import UserModel from "../models/user.model.js"
+import RoleModel from "../models/roles.model.js"
+import MemberModel from "../models/member.model.js"
+import WorkspaceModel from "../models/workspace.model.js"
+import { 
+    BadRequestException, 
+    NotFoundException 
+} from "../utils/appError.util.js"
 
 export const registerUserService = async body => {
-    const { email, name, password } = body
-    try {
-        const existingUser = await UserModel.findOne({ email })
-        if (existingUser) {
-            throw new BadRequestException("Email already exists");
-        }
-        const user = new UserModel({
-            email,
-            name,
-            password
-        })
-        await user.save()
-        const workspace = new WorkspaceModel({
-            name: `My Workspace`,
-            description: `Workspace created for ${user.name}`,
-            owner: user._id
-        })
-        await workspace.save()
-        const ownerRole = await RoleModel.findOne({
-            name: Roles.OWNER,
-        })
-        if (!ownerRole) {
-            throw new NotFoundException("Owner role not found");
-        }
-        const member = new MemberModel({
-            userId: user._id,
-            workspaceId: workspace._id,
-            role: ownerRole._id,
-            joinedAt: new Date()
-        })
-        await member.save()
-        user.currentWorkspace = workspace._id 
-        await user.save()
-        return {
-            userId: user._id,
-            name: user.name,
-            email: user.email,
-            password: user.password,
-            workspaceId: workspace._id
-        }
-    } catch (error) {
-        console.log(`Error In auth.service.js registerUserService Method  = ${error}`)
+    let { email, name, password } = body
+    const existingUser = await UserModel.findOne({ email })
+    if (existingUser) {
+        throw new BadRequestException("Email already exists");
+    }
+    const user = new UserModel({ email, name, password })
+    await user.save()
+    const workspace = new WorkspaceModel({
+        name: `${user.name} - Workspace`,
+        description: `Workspace created for ${user.name}`,
+        owner: user._id
+    })
+    await workspace.save()
+    const ownerRole = await RoleModel.findOne({ name: Roles.OWNER })
+    if (!ownerRole) {
+        throw new NotFoundException("Owner role not found");
+    }
+    const member = new MemberModel({
+        userId: user._id,
+        workspaceId: workspace._id,
+        role: ownerRole._id,
+        joinedAt: new Date()
+    })
+    await member.save()
+    user.currentWorkspace = workspace._id 
+    await user.save()
+    return {
+        userId: user._id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        workspaceId: workspace._id
     }
 }
 

@@ -1,6 +1,9 @@
 import mongoose from "mongoose"
-import { Roles, Permissions } from "../enums/roles.enum.js"
 import { RolePermissions } from "../utils/rolesPermissions.util.js"
+import { 
+    Roles, 
+    Permissions 
+} from "../enums/roles.enum.js"
 const roleSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -19,5 +22,5 @@ const roleSchema = new mongoose.Schema({
 }, { 
     timestamps: true 
 })
-const RoleModel = mongoose.model("Role", roleSchema)
+const RoleModel = mongoose.models.Role || mongoose.model("Role", roleSchema)
 export default RoleModel

@@ -3,6 +3,7 @@ import TaskModel from "../models/task.model.js"
 import ProjectModel from "../models/project.model.js"
 import { TaskStatusEnum } from "../enums/tasks.enum.js"
 import { NotFoundException } from "../utils/appError.util.js"
+
 export const createProjectService = async (userId, workspaceId, body) => {
     const project = new ProjectModel({
         name: body.name,

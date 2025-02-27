@@ -1,19 +1,20 @@
 import { z } from "zod"
+
 export const emailSchema = z
     .string()
     .trim()
     .email("Invalid email address")
-    .max(50, "Too long Email Address")
+    .max(50)
 export const passwordSchema = z
     .string()
     .trim()
-    .min(4, "Password must have minimum 4 characters")
+    .min(7, "Password must have minimum 7 characters")
 export const registerSchema= z.object({
     name: z
         .string()
         .trim()
         .min(1,"Name Can't be Empty")
-        .max(255, "Too Long Name"),
+        .max(255),
     email: emailSchema,
     password: passwordSchema
 })

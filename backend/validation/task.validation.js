@@ -1,7 +1,10 @@
 import { z } from "zod"
-import { TaskPriorityEnum, TaskStatusEnum } from "../enums/tasks.enum.js"
+import { 
+    TaskPriorityEnum, 
+    TaskStatusEnum 
+} from "../enums/tasks.enum.js"
 
-export const titleSchema = z.string().trim().min(1).max(255)
+export const titleSchema = z.string().trim().min(1,"Task must have a title").max(255)
 export const descriptionSchema = z.string().trim().optional()
 export const assignedToSchema = z.string().trim().min(1).nullable().optional()
 export const prioritySchema = z.enum(Object.values(TaskPriorityEnum))

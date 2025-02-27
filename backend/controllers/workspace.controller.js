@@ -1,25 +1,32 @@
-import { changeRoleSchema, createWorkspaceSchema, updateWorkspaceSchema } from "../validation/workspace.validation.js"
-import { workspaceIdSchema } from "../validation/workspace.validation.js"
-import { createWorkspaceService } from "../services/workspace.service.js"
-import { getAllWorkspacesUserIsMemberService } from "../services/workspace.service.js"
-import { getWorkspaceByIdService } from "../services/workspace.service.js"
-import { getMemberRoleInWorkspaceService } from "../services/member.service.js"
-import { getWorkspaceMembersService } from "../services/workspace.service.js"
-import { getWorkspaceAnalyticsService } from "../services/workspace.service.js"
-import { changeMemberRoleService } from "../services/workspace.service.js"
-import { updateWorkspaceByIdService } from "../services/workspace.service.js"
-import { deleteWorkspaceService } from "../services/workspace.service.js"
+import { Permissions } from "../enums/roles.enum.js"
 import { HTTPSTATUS } from "../config/http.config.js"
 import { roleGuard } from "../utils/roleGuard.util.js"
-import { Permissions } from "../enums/roles.enum.js"
+import { 
+    changeRoleSchema, 
+    createWorkspaceSchema,
+    updateWorkspaceSchema,
+    workspaceIdSchema
+} from "../validation/workspace.validation.js"
+import { 
+    createWorkspaceService,
+    getAllWorkspacesUserIsMemberService,
+    getWorkspaceByIdService,
+    getWorkspaceMembersService,
+    getWorkspaceAnalyticsService,
+    changeMemberRoleService,
+    updateWorkspaceByIdService,
+    deleteWorkspaceService
+} from "../services/workspace.service.js"
+import { getMemberRoleInWorkspaceService } from "../services/member.service.js"
+
 export const createWorkspaceController = async (req, res, next) => {
     try {
         const body = createWorkspaceSchema.parse(req.body)
         const userId = req.user?._id
         const workspace = await createWorkspaceService(userId, body)
         return res.status(HTTPSTATUS.CREATED).json({
-          message: "Workspace created successfully",
-          workspace
+            message: "Workspace created successfully",
+            workspace
         })
         
     } catch (error) {
@@ -31,8 +38,8 @@ export const getAllWorkspacesUserIsMemberController = async (req, res, next) => 
         const userId = req.user?._id
         const workspaces = await getAllWorkspacesUserIsMemberService(userId)
         return res.status(HTTPSTATUS.OK).json({
-          message: "All The User's workspaces fetched successfully",
-          workspaces
+            message: "All The User's workspaces fetched successfully",
+            workspaces
         })    
     } catch (error) {
         next(error)
@@ -45,8 +52,8 @@ export const getWorkspaceByIdController = async (req, res, next) => {
         await getMemberRoleInWorkspaceService(userId, workspaceId)
         const { workspace } = await getWorkspaceByIdService(workspaceId)
         return res.status(HTTPSTATUS.OK).json({
-          message: "Workspace fetched successfully",
-          workspace
+            message: "Workspace fetched successfully",
+            workspace
         })
     } catch (error) {
         next(error)

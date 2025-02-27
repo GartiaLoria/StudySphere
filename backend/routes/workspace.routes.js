@@ -1,12 +1,15 @@
 import express from "express"
-import { createWorkspaceController } from "../controllers/workspace.controller.js"
-import { getAllWorkspacesUserIsMemberController } from "../controllers/workspace.controller.js"
-import { getWorkspaceByIdController } from "../controllers/workspace.controller.js"
-import { getWorkspaceMembersController } from "../controllers/workspace.controller.js"
-import { getWorkspaceAnalyticsController } from "../controllers/workspace.controller.js"
-import { changeWorkspaceMemberRoleController } from "../controllers/workspace.controller.js"
-import { updateWorkspaceByIdController } from "../controllers/workspace.controller.js"
-import { deleteWorkspaceByIdController } from "../controllers/workspace.controller.js"
+import { 
+    createWorkspaceController,
+    getAllWorkspacesUserIsMemberController,
+    getWorkspaceByIdController,
+    getWorkspaceMembersController,
+    getWorkspaceAnalyticsController,
+    changeWorkspaceMemberRoleController,
+    updateWorkspaceByIdController,
+    deleteWorkspaceByIdController 
+} from "../controllers/workspace.controller.js"
+
 const workspaceRoutes = express.Router()
 workspaceRoutes.post("/create/new", createWorkspaceController)
 workspaceRoutes.get("/all", getAllWorkspacesUserIsMemberController)

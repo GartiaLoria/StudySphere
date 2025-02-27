@@ -1,9 +1,14 @@
-import WorkspaceModel from "../models/workspace.model.js"
-import MemberModel from "../models/member.model.js"
 import RoleModel from "../models/roles.model.js"
-import { NotFoundException, UnauthorizedException } from "../utils/appError.util.js"
+import MemberModel from "../models/member.model.js"
+import WorkspaceModel from "../models/workspace.model.js"
+import { 
+    NotFoundException, 
+    UnauthorizedException, 
+    BadRequestException 
+} from "../utils/appError.util.js"
 import { ErrorCodesEnum } from "../enums/errorCodes.enum.js"
 import { Roles } from "../enums/roles.enum.js"
+
 export const getMemberRoleInWorkspaceService = async (userId, workspaceId) => {
     // console.log(userId, "WorkspaceId = ", workspaceId)
     const workspace = await WorkspaceModel.findById(workspaceId)

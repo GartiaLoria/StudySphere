@@ -1,11 +1,14 @@
 import UserModel from "../models/user.model.js"
-import RoleModel from "../models/roles.model.js"
-import WorkspaceModel from "../models/workspace.model.js"
-import MemberModel from "../models/member.model.js"
 import TaskModel from "../models/task.model.js"
-import ProjectModel from "../models/project.model.js/"
+import RoleModel from "../models/roles.model.js"
+import MemberModel from "../models/member.model.js"
+import ProjectModel from "../models/project.model.js"
+import WorkspaceModel from "../models/workspace.model.js"
 import { Roles } from "../enums/roles.enum.js"
-import { NotFoundException } from "../utils/appError.util.js"
+import { 
+    NotFoundException,
+    BadRequestException 
+} from "../utils/appError.util.js"
 import { TaskStatusEnum } from "../enums/tasks.enum.js"
 export const createWorkspaceService = async (userId, body) => {
     const { name, description } = body

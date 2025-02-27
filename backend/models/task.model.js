@@ -1,6 +1,9 @@
 import mongoose from "mongoose"
-import { TaskPriorityEnum, TaskStatusEnum } from "../enums/tasks.enum.js"
 import { generateTaskCode } from "../utils/uuid.util.js"
+import { 
+    TaskPriorityEnum, 
+    TaskStatusEnum 
+} from "../enums/tasks.enum.js"
 const taskSchema = new mongoose.Schema({
     taskCode: {
         type: String,
@@ -54,5 +57,5 @@ const taskSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-const TaskModel = mongoose.model("Task", taskSchema)
+const TaskModel = mongoose.models.Task ||  mongoose.model("Task", taskSchema)
 export default TaskModel

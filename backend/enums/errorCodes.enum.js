@@ -15,5 +15,5 @@ export const ErrorCodesEnum = Object.freeze({
     RESOURCE_NOT_FOUND: "RESOURCE_NOT_FOUND",
 
     // System Errors
-    INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+    INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR"
 })

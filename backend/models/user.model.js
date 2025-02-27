@@ -1,5 +1,8 @@
 import mongoose from "mongoose"
-import { compareValues, hashValue } from "../utils/bcrypt.util.js"
+import { 
+    compareValues, 
+    hashValue 
+} from "../utils/bcrypt.util.js"
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -56,5 +59,5 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (value) {
     return compareValues(value, this.password)
 }
-const UserModel = mongoose.model("User", userSchema)
+const UserModel = mongoose.models.User ||  mongoose.model("User", userSchema)
 export default UserModel

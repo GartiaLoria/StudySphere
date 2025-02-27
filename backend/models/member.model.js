@@ -22,5 +22,5 @@ const memberSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-const MemberModel = mongoose.model('Member', memberSchema)
+const MemberModel = mongoose.models.Member || mongoose.model('Member', memberSchema)
 export default MemberModel

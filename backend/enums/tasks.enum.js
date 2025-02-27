@@ -6,7 +6,7 @@ export const TaskStatusEnum = Object.freeze({
     DONE: "DONE"
 })
 export const TaskPriorityEnum = Object.freeze({
-    LOW: "LOW",
+    HIGH: "HIGH",
     MEDIUM: "MEDIUM",
-    HIGH: "HIGH"
+    LOW: "LOW"
 })

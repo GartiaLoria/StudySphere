@@ -1,15 +1,22 @@
-import { createProjectSchema, projectIdSchema, updateProjectSchema } from "../validation/project.validation.js"
-import { workspaceIdSchema } from "../validation/workspace.validation.js"
-import { getMemberRoleInWorkspaceService } from "../services/member.service.js"
-import { createProjectService } from "../services/project.service.js"
-import { getProjectsInWorkspaceService } from "../services/project.service.js"
-import { getProjectByIdAndWorkspaceIdService } from "../services/project.service.js"
-import { getProjectAnalyticsService } from "../services/project.service.js"
-import { updateProjectService } from "../services/project.service.js"
-import { deleteProjectService } from "../services/project.service.js"
-import { roleGuard } from "../utils/roleGuard.util.js"
-import { HTTPSTATUS } from "../config/http.config.js"
 import { Permissions } from "../enums/roles.enum.js"
+import { HTTPSTATUS } from "../config/http.config.js"
+import { roleGuard } from "../utils/roleGuard.util.js"
+import { 
+    createProjectSchema, 
+    projectIdSchema, 
+    updateProjectSchema 
+} from "../validation/project.validation.js"
+import { workspaceIdSchema } from "../validation/workspace.validation.js"
+import { 
+    createProjectService, 
+    getProjectsInWorkspaceService,
+    getProjectByIdAndWorkspaceIdService,
+    getProjectAnalyticsService, 
+    updateProjectService,
+    deleteProjectService
+} from "../services/project.service.js"
+import { getMemberRoleInWorkspaceService } from "../services/member.service.js"
+
 export const createProjectController = async (req, res, next) => {
     try {
         const body = createProjectSchema.parse(req.body)

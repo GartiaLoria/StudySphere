@@ -23,4 +23,3 @@ const httpConfig = () => ({
     GATEWAY_TIMEOUT: 504
 })
 export const HTTPSTATUS = httpConfig()
-
