@@ -48,12 +48,12 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
-// // Remove password from user object before sending response
-// userSchema.methods.omitPassword = function () {
-//     const userObject = this.toObject()
-//     delete userObject.password
-//     return userObject
-// };
+// Remove password from user object before sending response
+userSchema.methods.omitPassword = function () {
+    const userObject = this.toObject()
+    delete userObject.password
+    return userObject
+}
 
 // Compare hashed password
 userSchema.methods.comparePassword = async function (value) {
