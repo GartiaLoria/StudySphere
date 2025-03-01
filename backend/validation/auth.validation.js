@@ -8,7 +8,7 @@ export const emailSchema = z
 export const passwordSchema = z
     .string()
     .trim()
-    .min(7, "Password must have minimum 7 characters")
+    .min(4, "Password must have minimum 4 characters")
 export const registerSchema= z.object({
     name: z
         .string()

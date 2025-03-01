@@ -58,8 +58,8 @@ export const verifyUserService = async body => {
     if(!isValidPassword) {
         throw new BadRequestException("Invalid Password")
     }
-    user.omitPassword()
-    let token = jwt.sign(user, config.JWT_SECRET, { expiresIn: '1000 minutes' })
+    // console.log("User info: ", user.omitPassword())
+    let token = jwt.sign(user.omitPassword(), config.JWT_SECRET, { expiresIn: '1000 minutes' })
     // console.log("Token = " + token)
     return ({
         "status": HTTPSTATUS.ACCEPTED,
