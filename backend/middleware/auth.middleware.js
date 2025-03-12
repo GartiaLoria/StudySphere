@@ -11,7 +11,7 @@ const authenticateUser = (req, res, next) => {
     }
     try {
         let decodedData = jwt.verify(token.split(" ")[1], config.JWT_SECRET)
-        req.user = decodedData.user
+        req.user = decodedData
     } catch (error) {
         throw new BadRequestException("Login Invalidated, Token not verified")
     }
