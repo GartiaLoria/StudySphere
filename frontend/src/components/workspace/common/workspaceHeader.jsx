@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-// import { useAuthContext } from "@/context/auth-provider";
+import { useAuthContext } from "@/context/AuthProvider";
 import { Loader } from "lucide-react";
 
 const WorkspaceHeader = () => {
-  // const { workspaceLoading, workspace } = useAuthContext();
-const { workspaceLoading, workspace } = {workspaceLoading: true, workspace: null};
+  const { workspaceLoading, workspace } = useAuthContext();
+// const { workspaceLoading, workspace } = {workspaceLoading: true, workspace: null};
   return (
     <div className="w-full max-w-3xl mx-auto pb-2">
       {workspaceLoading ? (

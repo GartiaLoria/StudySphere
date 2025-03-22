@@ -8,7 +8,7 @@ const Home = () => {
   const { user } = useAuthContext()
   const exploreWorkspaceAction = () => {
     if(user) {
-      navigate(`/workspace/${user.currentWorkspace}`)
+      navigate(`/workspace/${user.currentWorkspace._id}`)
     } else {
       toast({
         title: "Login Required",

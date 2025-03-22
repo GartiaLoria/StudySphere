@@ -2,15 +2,16 @@
 import { useAuthContext } from "@/context/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "@/hooks/useToast";
+import { getToken } from "@/utills/token.util";
 const ProtectedRoute = () => {
   // const { data: authData, isLoading } = useAuth();
-  const { user } = useAuthContext()
+  const  token  = getToken();
 
   // if (isLoading) {
   //   // return <DashboardSkeleton />;
   // }
   // while(isLoading)
-  if(!user) {
+  if(!token) {
     toast({
       title: "Authentication Failed",
       description: "You need to Login first",

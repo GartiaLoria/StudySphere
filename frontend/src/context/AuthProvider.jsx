@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }) => {
     console.log("Token status: Auth Provider ", token)
     if (token) {
       const decodedData = decodeToken(token);
+      console.log(decodedData.currentWorkspace)
       if (decodedData) {
-        console.log("Setting User:",decodedData)
         setUser({
           _id: decodedData._id,
           name: decodedData.name,
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       setUser(null);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     console.log(user)

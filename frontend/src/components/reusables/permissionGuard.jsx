@@ -1,13 +1,11 @@
 import React from "react";
-// import { useAuthContext } from "@/context/auth-provider";
+import { useAuthContext } from "@/context/AuthProvider";
 
-const PermissionsGuard = ({requiredPermission,showMessage = false, children}) => {
-  // const { hasPermission } = useAuthContext();
+const PermissionsGuard = ({ requiredPermission, showMessage = false, children }) => {
+  const { hasPermission } = useAuthContext();
 
-  // if ( !hasPermission(requiredPermission)) {
-  if (true) {
-    return (
-      // showMessage && (
+  if (!hasPermission(requiredPermission)) {
+    return showMessage &&
       (
         <div
           className="text-center 
@@ -19,7 +17,6 @@ const PermissionsGuard = ({requiredPermission,showMessage = false, children}) =>
           You do not have the permission to view this
         </div>
       )
-    );
   }
 
   return <div>{children}</div>;
