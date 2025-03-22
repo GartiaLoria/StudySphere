@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCurrentUserQueryFn } from "@/apis/user.apis";
 const useAuth = ({ enabled = true } = {}) => {
   const query = useQuery({
-    enabled,
+    enabled: enabled,
     queryKey: ["authUser"],
     queryFn: getCurrentUserQueryFn,
     staleTime: 0,
