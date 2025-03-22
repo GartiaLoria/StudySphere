@@ -17,7 +17,12 @@ import errorHandler from "./middleware/errorHandler.middleware.js"
 const app = express()
 const BASE_PATH = config.BASE_PATH
 
-app.use(cors())
+app.use( 
+    cors({
+        origin: config.FRONTEND_ORIGIN, // Allow only your frontend
+        credentials: true, // Allow cookies and authorization headers
+    })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
