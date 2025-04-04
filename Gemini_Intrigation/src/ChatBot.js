@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Send, X, MessageCircle } from "lucide-react";
+import { Send, MessageCircle } from "lucide-react";
 import { getGeminiResponse } from "./geminiService";
 import { Filter } from "bad-words";
 import { ArrowRight } from "lucide-react";
 
 const filter = new Filter();
 filter.addWords(
-  "ganda", "bakwas", "chutiya", "harami", "bhosdike", "madarchod", 
+  "gandu", "bakwas", "chutiya", "harami", "bhosdike", "madarchod", "sala",
   "behenchod", "kuttiya", "kaminey", "nalayak", "ghatiya", "ullu", 
   "bewakoof", "gaand", "lodu", "jhant", "chirkut", "suar", "gadha", 
   "chamaar", "bhangi", "bhadwa", "randi", "kutta", "chutmar", "chut", 
@@ -20,7 +20,6 @@ filter.addWords(
   "bhan ke takke", "gandi aulaad", "kutta kamina", "gand faad", 
   "chudai", "teri maa ka", "lavde", "suar ka bachcha","mc","bc","MC","BC"
 );
-
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,43 +41,42 @@ const ChatBot = () => {
     setLoading(true);
 
     try {
-      const botResponse = await getGeminiResponse(filteredMsg);
+      const instruction = `
+      Answer in a **maximum of 8 lines**. Keep responses concise and clear.
+      If necessary, provide key points in bullet format.
+    `;
 
-      // Clean and format the bot response
-      const formattedResponse = formatBotResponse(botResponse);
-
-      setMessages((prev) => [...prev.slice(-9), { text: botResponse, sender: "bot" }]);
-  } catch (error) {
-    setMessages((prev) => [...prev.slice(-9), { text: "Error fetching response", sender: "bot" }]);
-  } finally {
-    setLoading(false);
+    const botResponse = await getGeminiResponse(`${instruction}\nUser: ${filteredMsg}`);
+    const formattedResponse = formatBotResponse(botResponse);
+      setMessages((prev) => [...prev.slice(-9), { text: formattedResponse, sender: "bot" }]);
+    } catch (error) {
+      setMessages((prev) => [...prev.slice(-9), { text: "Error fetching response", sender: "bot" }]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const formatBotResponse = (response) => {
-    // Remove the unwanted markdown symbols like **
-    const cleanedResponse = response.replace(/\*\*/g, ""); // Remove all the ** symbols for bold
-  
-    // Format the bold words by wrapping them in <strong> tags
-    const formattedResponse = cleanedResponse.replace(/(\*\*([^\*]+)\*\*)/g, (match, p1, p2) => {
-      return `<strong class="font-bold">${p2}</strong>`; // Wrap bold content in <strong> tag
+    const cleanedResponse = response.replace(/\*\*/g, "");
+    const formattedResponse = cleanedResponse.replace(/(\*\*([^*]+)(\*+)\*\*)/g, (match, p1, p2) => {
+      return `<strong class="font-bold">${p2}</strong>`;
     });
-  
-    // Split the response into bullet points by detecting lines starting with bullet points (•)
+
     const points = formattedResponse.split("\n").map((line, index) => {
       if (line.trim() !== "") {
         if (line.startsWith("•")) {
-          line = line.replace(/^•\s*/, ""); // Remove the bullet symbol
-          return `<li key=${index} class="mb-2">• ${line.trim()}</li>`; // Bullet point
+          line = line.replace(/^•\s*/, "");
+          return `<li key=${index} class="mb-2">• ${line.trim()}</li>`;
         } else {
-          return `<li key=${index} class="mb-2">${line.trim()}</li>`; // Normal list item
+          return `<li key=${index} class="mb-2">${line.trim()}</li>`;
         }
       }
       return null;
-    }).filter(Boolean); // Remove null values
-  
-    return `<ul class="list-disc pl-6 text-white">${points.join("")}</ul>`; // Wrap in unordered list
+    }).filter(Boolean);
+
+    return `<ul class="list-disc pl-6 text-white">${points.join("")}</ul>`;
   };
+
   return (
     <div className="fixed bottom-4 right-4">
       {isOpen ? (
@@ -95,7 +93,7 @@ const ChatBot = () => {
                 className={`p-2 max-w-[75%] rounded-lg text-sm flex ${
                   msg.sender === "user" ? "bg-green-500 text-white ml-auto" : "bg-gray-700 text-white"
                 }`}
-                dangerouslySetInnerHTML={{ __html: msg.text }} // Render HTML content
+                dangerouslySetInnerHTML={{ __html: msg.text }}
               />
             ))}
             {loading && <div className="text-gray-400 text-sm">Typing...</div>}
@@ -108,9 +106,12 @@ const ChatBot = () => {
               placeholder="Type a message..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+
             />
-            <button onClick={sendMessage} className="bg-green-500 text-white p-2 rounded-full ml-2 flex items-center justify-center">
-              <Send size={20} />
+            <button onClick={sendMessage}  className="bg-green-500 text-white p-2 rounded-full ml-2 flex items-center justify-center">
+              <Send size={20}
+               />
             </button>
           </div>
         </div>
